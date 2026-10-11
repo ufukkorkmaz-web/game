@@ -192,6 +192,25 @@ main{flex:1;min-height:0}
 .chip{grid-area:c;align-self:start;justify-self:start;display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800;margin-top:4px}
 .chip.ok{background:rgba(61,220,151,.15);color:var(--good)} .chip.no{background:rgba(255,93,108,.15);color:var(--bad)}
 
+
+/* intro (shown once, before the main page) */
+#s-intro.active{display:grid;place-items:center}
+.intro{max-width:760px;width:100%;padding:34px 40px;text-align:center}
+.intro .seal{width:84px;height:84px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,#ffb347,#ff7a59);box-shadow:0 0 0 8px rgba(255,179,71,.15),0 14px 40px rgba(255,130,80,.35)}
+.intro .seal svg{width:46px;height:46px;color:#2a1600;transform-origin:70% 80%;animation:tap 2.4s ease-in-out infinite}
+@keyframes tap{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-14deg)}80%{transform:rotate(6deg)}}
+.intro .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.intro h1{font-size:48px;margin:0 0 12px;line-height:1.08;letter-spacing:-.5px}
+.intro p.story{font-size:18px;color:var(--muted);margin:0 auto 24px;max-width:540px;line-height:1.5}
+.intro p.story b{color:var(--text)}
+@media (max-width:900px){
+  .intro{padding:22px 18px}
+  .intro .seal{width:70px;height:70px;margin-bottom:12px}
+  .intro .seal svg{width:38px;height:38px}
+  .intro h1{font-size:34px}
+  .intro p.story{font-size:16px;margin-bottom:18px}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.wit{opacity:1}}
 
 /* narrow screens (phones, small tablets in portrait): one pane at a time */
@@ -276,7 +295,17 @@ main{flex:1;min-height:0}
   </header>
 
   <main>
-    <section id="s-start" class="screen active" data-fit>
+    <section id="s-intro" class="screen active" data-fit>
+      <div class="card intro">
+        <div class="seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2.5" y="5" width="11" height="5.5" rx="1.6" transform="rotate(-38 8 7.7)"/><rect x="9.6" y="9.2" width="2.5" height="11" rx="1.2" transform="rotate(-38 10.8 14.7)"/><rect x="12" y="19.5" width="9.5" height="2.2" rx="1.1"/></svg></div>
+        <p class="eyebrow">Ten cases &middot; one court artist</p>
+        <h1>Court is now in session.</h1>
+        <p class="story">Things keep going missing around town, and the witnesses do not always agree. <b>You are the court artist.</b> Listen carefully, draw the suspect, and help the jury find the right person.</p>
+        <button class="btn primary big" id="btn-intro">Start</button>
+      </div>
+    </section>
+
+    <section id="s-start" class="screen" data-fit>
       <div class="card hero">
         <h1>Draw the <span>suspect.</span><br>Catch the thief.</h1>
         <p class="lead">Witnesses tell you what they saw. You are the court artist. Draw the suspect, then the court will look for them in a lineup of six people.</p>
@@ -899,9 +928,11 @@ function setPane(p,quiet){
 }
 [].forEach.call(document.querySelectorAll('.tab'),function(t){t.onclick=function(){setPane(t.getAttribute('data-pane'));};});
 $('#btn-godraw').onclick=function(){setPane('draw');};
+$('#btn-intro').onclick=function(){show('s-start');};
 var fitQ=0;
 window.addEventListener('resize',function(){cancelAnimationFrame(fitQ);fitQ=requestAnimationFrame(fit);});
 window.addEventListener('load',fit);
+$('#btn-intro').focus();
 
 fit();
 </script>
